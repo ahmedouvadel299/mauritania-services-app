@@ -13,7 +13,6 @@ jobs:
 
       - uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.24.0'
           channel: 'stable'
 
       # ينشئ مجلدي android/ios المفقودين دون المساس بكود lib الموجود
