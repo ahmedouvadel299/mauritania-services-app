@@ -16,6 +16,10 @@ jobs:
           flutter-version: '3.24.0'
           channel: 'stable'
 
+      # ينشئ مجلدي android/ios المفقودين دون المساس بكود lib الموجود
+      - name: Generate native platform folders
+        run: flutter create --org com.mauritaniaservices --project-name mauritania_services .
+
       - name: Create .env file
         run: |
           echo "SUPABASE_URL=${{ secrets.SUPABASE_URL }}" >> .env
