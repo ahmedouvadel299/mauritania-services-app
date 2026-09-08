@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'phone_entry_screen.dart';
+import 'email_auth_screen.dart';
 
 class ChooseRoleScreen extends StatelessWidget {
   const ChooseRoleScreen({super.key});
@@ -24,14 +24,14 @@ class ChooseRoleScreen extends StatelessWidget {
                 title: 'أبحث عن خدمة',
                 subtitle: 'كعميل يريد حجز مقدمي خدمات',
                 icon: Icons.search,
-                onTap: () => _goToPhone(context, 'customer'),
+                onTap: () => _goToAuth(context, 'customer'),
               ),
               const SizedBox(height: 16),
               _RoleCard(
                 title: 'أقدّم خدمة',
                 subtitle: 'كمقدم خدمة (كهربائي، سباك، ...)',
                 icon: Icons.handyman,
-                onTap: () => _goToPhone(context, 'provider'),
+                onTap: () => _goToAuth(context, 'provider'),
               ),
             ],
           ),
@@ -40,9 +40,9 @@ class ChooseRoleScreen extends StatelessWidget {
     );
   }
 
-  void _goToPhone(BuildContext context, String role) {
+  void _goToAuth(BuildContext context, String role) {
     Navigator.of(context).push(
-      MaterialPageRoute(builder: (_) => PhoneEntryScreen(role: role)),
+      MaterialPageRoute(builder: (_) => EmailAuthScreen(role: role)),
     );
   }
 }
