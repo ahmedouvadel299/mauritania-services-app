@@ -42,7 +42,7 @@ class _EmailAuthScreenState extends State<EmailAuthScreen> {
         const SnackBar(content: Text('تم إنشاء الحساب بنجاح')),
       );
     } catch (e) {
-      setState(() => _error = 'تعذّر إنشاء الحساب، حاول مجددًا');
+      setState(() => _error = 'خطأ: $e');
     } finally {
       if (mounted) setState(() => _isLoading = false);
     }
