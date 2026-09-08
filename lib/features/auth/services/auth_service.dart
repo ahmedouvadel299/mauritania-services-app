@@ -1,38 +1,37 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../../core/supabase_client.dart';
 
-/// كل منطق المصادقة في مكان واحد — الشاشات تستدعي هذه الدوال فقط
-/// ولا تتحدث مع Supabase مباشرة (فصل الطبقات).
+/// نسخة مؤقتة تستخدم البريد الإلكتروني وكلمة المرور بدل OTP الهاتف،
+/// لتفادي الحاجة لمزوّد SMS أثناء مرحلة البناء والاختبار.
+/// عند الجاهزية لاحقًا لإعادة تفعيل الهاتف، تُستبدل هذه الدوال فقط
+/// دون التأثير على أي كود آخر في التطبيق (بفضل فصل الطبقات).
 class AuthService {
   final _client = AppSupabase.client;
 
-  /// يرسل رمز OTP إلى رقم الهاتف. الصيغة يجب أن تكون دولية: +2224xxxxxxx
-  Future<void> sendOtp(String phone) async {
-    await _client.auth.signInWithOtp(phone: phone);
-  }
-
-  /// يتحقق من رمز OTP الذي أدخله المستخدم.
-  Future<AuthResponse> verifyOtp({
-    required String phone,
-    required String otp,
+  Future<AuthResponse> signUp({
+    required String email,
+    required String password,
   }) {
-    return _client.auth.verifyOTP(
-      phone: phone,
-      token: otp,
-      type: OtpType.sms,
-    );
+    return _client.auth.signUp(email: email, password: password);
   }
 
-  /// يُستدعى بعد أول تسجيل دخول ناجح لإنشاء صف في جدول users العام.
+  Future<AuthResponse> signIn({
+    required String email,
+    required String password,
+  }) {
+    return _client.auth.signInWithPassword(email: email, password: password);
+  }
+
+  /// يُستدعى بعد أول تسجيل ناجح لإنشاء صف في جدول users العام.
   Future<void> createUserProfile({
     required String fullName,
     required String role, // 'customer' | 'provider'
   }) async {
     final userId = _client.auth.currentUser!.id;
-    final phone = _client.auth.currentUser!.phone!;
+    final email = _client.auth.currentUser!.email!;
     await _client.from('users').upsert({
       'id': userId,
-      'phone': phone,
+      'phone': email, // مؤقتًا نخزن البريد هنا إلى حين تفعيل الهاتف الحقيقي
       'full_name': fullName,
       'role': role,
     });
