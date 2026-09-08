@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import '../services/auth_service.dart';
+import '../../provider/screens/provider_registration_screen.dart';
 
+/// شاشة واحدة مؤقتة تجمع (بريد + كلمة مرور + اسم) بدل ٣ شاشات (هاتف/OTP/بيانات).
 class EmailAuthScreen extends StatefulWidget {
   final String role;
   const EmailAuthScreen({super.key, required this.role});
@@ -38,9 +40,19 @@ class _EmailAuthScreenState extends State<EmailAuthScreen> {
         role: widget.role,
       );
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('تم إنشاء الحساب بنجاح')),
-      );
+
+      if (widget.role == 'provider') {
+        // مقدم الخدمة ينتقل مباشرة لاستمارة التسجيل والتحقق
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (_) => const ProviderRegistrationScreen(),
+          ),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('تم إنشاء الحساب بنجاح')),
+        );
+      }
     } catch (e) {
       setState(() => _error = 'خطأ: $e');
     } finally {
@@ -69,7 +81,8 @@ class _EmailAuthScreenState extends State<EmailAuthScreen> {
               controller: _nameController,
               decoration: InputDecoration(
                 labelText: 'الاسم الكامل',
-                border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                border:
+                    OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
               ),
             ),
             const SizedBox(height: 12),
@@ -79,7 +92,8 @@ class _EmailAuthScreenState extends State<EmailAuthScreen> {
               textDirection: TextDirection.ltr,
               decoration: InputDecoration(
                 labelText: 'البريد الإلكتروني',
-                border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                border:
+                    OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
               ),
             ),
             const SizedBox(height: 12),
@@ -89,7 +103,8 @@ class _EmailAuthScreenState extends State<EmailAuthScreen> {
               textDirection: TextDirection.ltr,
               decoration: InputDecoration(
                 labelText: 'كلمة المرور',
-                border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                border:
+                    OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
               ),
             ),
             if (_error != null) ...[
@@ -103,7 +118,8 @@ class _EmailAuthScreenState extends State<EmailAuthScreen> {
                   ? const SizedBox(
                       height: 20,
                       width: 20,
-                      child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
+                      child: CircularProgressIndicator(
+                          strokeWidth: 2, color: Colors.white),
                     )
                   : const Text('إنشاء الحساب'),
             ),
