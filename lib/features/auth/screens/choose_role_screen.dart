@@ -14,6 +14,10 @@ class ChooseRoleScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
+              SelectableText(
+                'DEBUG URL: [${const String.fromEnvironment('dummy')}]${Uri.base}',
+                style: const TextStyle(fontSize: 10, color: Colors.red),
+              ),
               const Text(
                 'كيف تريد استخدام التطبيق؟',
                 textAlign: TextAlign.center,
