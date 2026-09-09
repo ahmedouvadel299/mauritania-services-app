@@ -1,14 +1,20 @@
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-/// نقطة اتصال واحدة بـ Supabase لكل التطبيق.
-/// المفاتيح تُقرأ من .env وليست مكتوبة هنا مباشرة (حماية أساسية للأسرار).
 class AppSupabase {
+  static late String debugUrl;
+  static late String debugKeyLength;
+
   static Future<void> init() async {
     await dotenv.load(fileName: '.env');
+    final url = dotenv.env['SUPABASE_URL'] ?? 'MISSING';
+    final key = dotenv.env['SUPABASE_ANON_KEY'] ?? 'MISSING';
+    debugUrl = url;
+    debugKeyLength = 'طول المفتاح: ${key.length} حرف، أول 15 حرف: ${key.substring(0, key.length > 15 ? 15 : key.length)}';
+
     await Supabase.initialize(
-      url: dotenv.env['SUPABASE_URL']!,
-      anonKey: dotenv.env['SUPABASE_ANON_KEY']!,
+      url: url.trim(),
+      anonKey: key.trim(),
     );
   }
 
