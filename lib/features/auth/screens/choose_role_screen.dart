@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'email_auth_screen.dart';
-
+import '../../../core/supabase_client.dart';
 class ChooseRoleScreen extends StatelessWidget {
   const ChooseRoleScreen({super.key});
 
@@ -11,9 +11,12 @@ class ChooseRoleScreen extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.all(24),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
+              SelectableText('رابط: ${AppSupabase.debugUrl}\n${AppSupabase.debugKeyLength}',
+                    style: const TextStyle(fontSize: 11, color: Colors.red)),
+                const SizedBox(height: 16),
               SelectableText(
                 'DEBUG URL: [${const String.fromEnvironment('dummy')}]${Uri.base}',
                 style: const TextStyle(fontSize: 10, color: Colors.red),
